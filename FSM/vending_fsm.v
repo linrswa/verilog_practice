@@ -1,4 +1,4 @@
-module vending_fsm (
+module vending_fsm(
     input  clk,
     input  rst_n,        // async reset
     input  coin5,        // 投入 5 元 (pulse)
