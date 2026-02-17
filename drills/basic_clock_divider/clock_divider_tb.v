@@ -3,13 +3,18 @@
 module clock_divider_tb;
 reg clk;
 reg rst_n;
-wire clk_out;
 
-clock_divider #(.DIVISOR(4)) dut (
-    .clk(clk),
-    .rst_n(rst_n),
-    .clk_out(clk_out)
-);
+genvar i;
+generate
+    for (i = 1; i < 3; i = i + 1) begin : gen_clock_dividers 
+	wire clk_out;
+	clock_divider #(.DIVISOR(2**i)) dut (
+	    .clk(clk),
+	    .rst_n(rst_n),
+	    .clk_out(clk_out)
+	);
+    end
+endgenerate
 
 task reset;
     begin
@@ -19,21 +24,15 @@ task reset;
 endtask
 
 initial begin
+    $dumpfile("clock_divider_tb.vcd");
+    $dumpvars(0, clock_divider_tb);
     clk = 0;
     rst_n = 0;
     #10 rst_n = 1; 
-end
-
-always #5 clk = ~clk;
-
-initial begin
-    $dumpfile("clock_divider_tb.vcd");
-    $dumpvars(0, clock_divider_tb);
+    #100 reset;
     #200 $finish;
 end
 
-initial begin
-    #100 reset;
-end
+always #5 clk = ~clk;
 
 endmodule

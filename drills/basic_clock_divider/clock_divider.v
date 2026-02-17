@@ -7,7 +7,7 @@ module clock_divider(
 
 parameter DIVISOR = 4;
 localparam COUNTER_WIDTH = $clog2(DIVISOR);
-reg [COUNTER_WIDTH:0] counter;
+reg [COUNTER_WIDTH-1:0] counter;
 
 always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
