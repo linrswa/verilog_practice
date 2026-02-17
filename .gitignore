@@ -1,0 +1,8 @@
+# Compiled outputs
+out/
+
+# Waveform dumps
+*.vcd
+
+# HDL checker cache
+.hdl_checker/
