@@ -1,0 +1,25 @@
+INFO    | 00:14:01 | hdl_checker.server @ run():213 MainThread |	Starting server. Our PID is 39389, no parent PID to attach to. Version string for hdl_checker is '0.7.4'
+INFO    | 00:14:01 | pygls.feature_manager @ add_builtin_feature():97 MainThread |	Registered builtin feature exit
+INFO    | 00:14:01 | pygls.feature_manager @ add_builtin_feature():97 MainThread |	Registered builtin feature initialize
+INFO    | 00:14:01 | pygls.feature_manager @ add_builtin_feature():97 MainThread |	Registered builtin feature initialized
+INFO    | 00:14:01 | pygls.feature_manager @ add_builtin_feature():97 MainThread |	Registered builtin feature shutdown
+INFO    | 00:14:01 | pygls.feature_manager @ add_builtin_feature():97 MainThread |	Registered builtin feature textDocument/didChange
+INFO    | 00:14:01 | pygls.feature_manager @ add_builtin_feature():97 MainThread |	Registered builtin feature textDocument/didClose
+INFO    | 00:14:01 | pygls.feature_manager @ add_builtin_feature():97 MainThread |	Registered builtin feature textDocument/didOpen
+INFO    | 00:14:01 | pygls.feature_manager @ add_builtin_feature():97 MainThread |	Registered builtin feature workspace/didChangeWorkspaceFolders
+INFO    | 00:14:01 | pygls.feature_manager @ add_builtin_feature():97 MainThread |	Registered builtin feature workspace/executeCommand
+INFO    | 00:14:01 | pygls.feature_manager @ decorator():164 MainThread |	Registered initialize with options {}
+INFO    | 00:14:01 | pygls.feature_manager @ decorator():164 MainThread |	Registered initialized with options {}
+INFO    | 00:14:01 | pygls.feature_manager @ decorator():164 MainThread |	Registered textDocument/didSave with options {}
+INFO    | 00:14:01 | pygls.feature_manager @ decorator():164 MainThread |	Registered textDocument/didChange with options {}
+INFO    | 00:14:01 | pygls.feature_manager @ decorator():164 MainThread |	Registered textDocument/didOpen with options {}
+INFO    | 00:14:01 | pygls.feature_manager @ decorator():164 MainThread |	Registered workspace/didChangeConfiguration with options {}
+INFO    | 00:14:01 | pygls.feature_manager @ decorator():164 MainThread |	Registered textDocument/hover with options {}
+INFO    | 00:14:01 | pygls.feature_manager @ decorator():164 MainThread |	Registered textDocument/references with options {}
+INFO    | 00:14:01 | pygls.feature_manager @ decorator():164 MainThread |	Registered textDocument/definition with options {}
+INFO    | 00:14:01 | pygls.server @ start_io():166 MainThread |	Starting IO server
+CRITICAL | 01:01:54 | concurrent.futures @ _worker():109 ThreadPoolExecutor-0_0 |	Exception in worker
+Traceback (most recent call last):
+  File "/Users/rswa/miniconda3/lib/python3.9/concurrent/futures/thread.py", line 81, in _worker
+    work_item = work_queue.get(block=True)
+_queue.Empty
