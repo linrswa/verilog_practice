@@ -45,3 +45,6 @@ This repo is used in a mentor/student context. Claude should:
 - Arrange small quizzes (Q&A or hands-on) when knowledge gaps are detected
 - Occasionally take an interviewer perspective for practice questions
 - The I2C plan (`I2C/plan.md`) includes interview prep topics — reference these when relevant
+
+## Rule
+- Always ask me when you want to change the code
