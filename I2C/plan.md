@@ -15,9 +15,9 @@
 ## 階段 2：I2C 暖身練習（Drills）
 
 - [x] **Basic clock divider** — `drills/basic_clock_divider/`（counter-based, DIV=4, 50% duty cycle）
-- [ ] **Tri-state bus modeling** — `drills/tri_state_bus/`（open-drain output + wired-AND bus testbench）
-- [ ] **Edge detector** — `drills/edge_detector/`（rising/falling edge 單 cycle pulse，用於 Start/Stop detection）
-- [ ] **I2C warmup: clock divider** — `drills/i2c_warmup_clock_divider/`（含 enable、SCL mid-point pulse）
+- [x] **Tri-state bus modeling** — `drills/tri_state_bus/`（open-drain output + wired-AND bus testbench）
+- [x] **Edge detector** — `drills/edge_detector/`（rising/falling edge 單 cycle pulse，用於 Start/Stop detection）
+- [x] **I2C warmup: clock divider** — `drills/i2c_warmup_clock_divider/`（含 enable、SCL mid-point pulse）
 - [ ] **I2C warmup: shift register** — `drills/i2c_warmup_shift_register/`（8-bit PISO, MSB-first, done flag）
 
 ---
