@@ -18,7 +18,7 @@
 - [x] **Tri-state bus modeling** — `drills/tri_state_bus/`（open-drain output + wired-AND bus testbench）
 - [x] **Edge detector** — `drills/edge_detector/`（rising/falling edge 單 cycle pulse，用於 Start/Stop detection）
 - [x] **I2C warmup: clock divider** — `drills/i2c_warmup_clock_divider/`（含 enable、SCL mid-point pulse）
-- [ ] **I2C warmup: shift register** — `drills/i2c_warmup_shift_register/`（8-bit PISO, MSB-first, done flag）
+- [x] **I2C warmup: shift register** — `drills/i2c_warmup_shift_register/`（8-bit PISO, MSB-first, done flag）
 
 ---
 
@@ -26,11 +26,11 @@
 
 > 產出：`i2c_master.v` + `i2c_master_tb.v`
 
-- [ ] Master FSM：`IDLE → START → ADDR[7:1] → R/W → ACK_CHECK → DATA[7:0] → ACK_CHECK → STOP`
-- [ ] SCL clock generation（clock divider from system clock）
-- [ ] SDA open-drain tri-state 建模（`assign sda = sda_oe ? sda_out : 1'bz`）
-- [ ] Shift register for bit-banging（MSB first）
-- [ ] Testbench：pullup model + simple slave behavioral response，驗證 write transaction
+- [x] Master FSM：`IDLE → START → ADDR[7:1] → R/W → ACK_CHECK → DATA[7:0] → ACK_CHECK → STOP`
+- [x] SCL clock generation（clock divider from system clock）
+- [x] SDA open-drain tri-state 建模（`assign sda = sda_oe ? sda_out : 1'bz`）
+- [x] Shift register for bit-banging（MSB first）
+- [x] Testbench：pullup model + simple slave behavioral response，驗證 write transaction
 
 **展示重點：** Start/Stop condition 時序、open-drain 原理、Setup/hold time on SDA vs SCL
 
