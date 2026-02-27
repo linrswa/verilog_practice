@@ -1,6 +1,6 @@
 # Verilog 學習專案
 
-從基礎數位邏輯到 I2C 協議實作的學習路徑，目標是準備數位 IC 相關面試。
+從基礎數位邏輯到 I2C 協議實作的學習練習紀錄。
 
 ## 工具環境
 
@@ -13,7 +13,7 @@
 ├── FF/                 # Flip-Flop 基礎（DFF with async reset）
 ├── FSM/                # 有限狀態機（販賣機 FSM，Mealy 型）
 ├── I2C/                # I2C Master/Slave 實作（進行中）
-│   └── plan.md         # 5 天實作計畫 + 面試考點
+│   └── plan.md         # 5 天實作計畫
 └── drills/             # 練習題（shift register、clock divider）
 ```
 
