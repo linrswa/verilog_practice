@@ -104,8 +104,8 @@ module i2c_master (
       case (state)
         IDLE: begin
           sda_oe <= 0;
-          busy <= 0;
-          done <= 0;
+          busy   <= 0;
+          done   <= 0;
           if (start) begin
             state <= START;
             ack_error <= 0;
@@ -204,6 +204,7 @@ module i2c_master (
                   if (sda) begin
                     ack_error <= 1;  // NACK
                   end
+                  byte_count <= byte_count + 1;
                   if (byte_count == num_bytes - 1) begin
                     if (repeated_start) begin
                       state <= REPEATED_START;
@@ -212,7 +213,6 @@ module i2c_master (
                     end
                   end else begin
                     data_buf <= data_in;
-                    byte_count <= byte_count + 1;
                     state <= WRITE;
                   end
                 end
@@ -259,6 +259,8 @@ module i2c_master (
             HIGH_MID: begin
               sda_oe <= 1;  // 拉低 SDA 產生 start condition
               addr_buf <= {slave_addr, rw};  // 7-bit address + write bit
+              bit_cnt <= 0;
+              byte_count <= 0;
               state <= ADDR;
             end
             default: begin
