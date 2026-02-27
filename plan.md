@@ -40,11 +40,11 @@
 
 > 產出：擴充 `i2c_master.v` + 更新 `i2c_master_tb.v`
 
-- [ ] Read transaction：Master 在 data phase 釋放 SDA，從 slave 讀取
-- [ ] Master ACK/NACK：讀最後一個 byte 送 NACK 通知 slave 結束
-- [ ] Repeated Start：不送 STOP 直接送新 START（用於 register read）
-- [ ] Multi-byte 支援：byte counter + done signal，連續 N-byte read/write
-- [ ] Testbench：驗證 register read pattern（write addr → repeated start → read data）
+- [x] Read transaction：Master 在 data phase 釋放 SDA，從 slave 讀取
+- [x] Master ACK/NACK：讀最後一個 byte 送 NACK 通知 slave 結束
+- [x] Repeated Start：不送 STOP 直接送新 START（用於 register read）
+- [x] Multi-byte 支援：byte counter + done signal，連續 N-byte read/write
+- [x] Testbench：驗證 register read pattern（write addr → repeated start → read data）
 
 **展示重點：** SDA ownership 切換、Repeated Start 用途、為什麼最後一個 byte 要 NACK
 
