@@ -92,6 +92,11 @@ module i2c_master (
       busy <= 0;
       done <= 0;
       ack_error <= 0;
+      data_valid <= 0;
+      data_buf <= 0;
+      data_out <= 0;
+      addr_buf <= 0;
+      byte_count <= 0;
       bit_cnt <= 0;
       state <= IDLE;
     end else begin
@@ -99,9 +104,8 @@ module i2c_master (
       case (state)
         IDLE: begin
           sda_oe <= 0;
-          scl_oe <= 0;
-          busy   <= 0;
-          done   <= 0;
+          busy <= 0;
+          done <= 0;
           if (start) begin
             state <= START;
             ack_error <= 0;
@@ -109,6 +113,8 @@ module i2c_master (
           end
         end
         START: begin
+          bit_cnt <= 0;
+          byte_count <= 0;
           if (clk_div_cnt == HIGH_MID) begin
             sda_oe <= 1;  // 拉低 SDA 產生 start condition
             addr_buf <= {slave_addr, rw};  // 7-bit address + write bit (0)
@@ -148,17 +154,37 @@ module i2c_master (
         end
         READ: begin
           case (clk_div_cnt)
-            LOW_MID: sda_oe <= ~data_buf[7-bit_cnt];  // MSB first
             HIGH_MID: begin
+              if (bit_cnt == 7) begin
+                ack_flag <= READ;
+                data_valid <= 1;
+                data_out <= {data_buf[6:0], sda};  // 更新 data_out
+                state <= ACK;  // 讀取完一個 byte 後進入 ACK phase
+              end
+              data_buf <= {data_buf[6:0], sda};  // MSB first
+              bit_cnt  <= bit_cnt + 1;
             end
             default: begin
-              sda_oe <= sda_oe;
+              data_out   <= data_out;
+              data_valid <= 0;
             end
           endcase
         end
         ACK: begin
           case (clk_div_cnt)
-            LOW_MID: sda_oe <= 0;  // 釋放 SDA 等待 slave 回 ACK/NACK
+            LOW_MID: begin
+              case (ack_flag)
+                ADDR, WRITE: sda_oe <= 0;  // 釋放 SDA 等待 slave 回 ACK/NACK
+                READ: begin
+                  if (byte_count == num_bytes - 1) begin
+                    sda_oe <= 0;  // 其他情況釋放 SDA 等待 slave 回 ACK/NACK
+                  end else begin
+                    sda_oe <= 1;  // 最後一個 byte 讀取完後拉低 SDA 送 NACK
+                  end
+                end
+                default: sda_oe <= sda_oe;
+              endcase
+            end
             HIGH_MID: begin
               case (ack_flag)
                 ADDR: begin  // address phase 不更新 data_out
@@ -166,7 +192,6 @@ module i2c_master (
                     ack_error <= 1;  // NACK
                     state <= STOP;  // 發生 NACK 就結束 transaction
                   end else begin
-                    bit_cnt <= 0;  // ACK 正確，準備發送 data
                     if (rw) begin
                       state <= READ;
                     end else begin
@@ -175,18 +200,45 @@ module i2c_master (
                     end
                   end
                 end
-                default: begin
+                WRITE: begin
                   if (sda) begin
                     ack_error <= 1;  // NACK
                   end
-                  state <= STOP;  // 發生 NACK 就結束 transaction
+                  if (byte_count == num_bytes - 1) begin
+                    if (repeated_start) begin
+                      state <= REPEATED_START;
+                    end else begin
+                      state <= STOP;
+                    end
+                  end else begin
+                    data_buf <= data_in;
+                    byte_count <= byte_count + 1;
+                    state <= WRITE;
+                  end
                 end
+                READ: begin
+                  data_valid <= 0;
+                  byte_count <= byte_count + 1;
+                  sda_oe <= 0;
+                  if (byte_count == num_bytes - 1) begin
+                    sda_oe <= 1;  // 最後一個 byte 讀取完後送 NACK
+                    if (repeated_start) begin
+                      state <= REPEATED_START;
+                    end else begin
+                      state <= STOP;
+                    end
+                  end else begin
+                    state <= READ;
+                  end
+                end
+                default: state <= state;
               endcase
             end
             default: begin
               sda_oe <= sda_oe;
             end
           endcase
+          bit_cnt <= 0;
         end
         STOP: begin
           case (clk_div_cnt)
@@ -195,6 +247,19 @@ module i2c_master (
               sda_oe <= 0;  // 釋放 SDA 產生 stop condition
               done   <= 1;
               state  <= IDLE;
+            end
+            default: begin
+              sda_oe <= sda_oe;
+            end
+          endcase
+        end
+        REPEATED_START: begin
+          case (clk_div_cnt)
+            LOW_MID: sda_oe <= 0;  // 釋放 SDA 產生 stop condition
+            HIGH_MID: begin
+              sda_oe <= 1;  // 拉低 SDA 產生 start condition
+              addr_buf <= {slave_addr, rw};  // 7-bit address + write bit
+              state <= ADDR;
             end
             default: begin
               sda_oe <= sda_oe;
