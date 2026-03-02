@@ -48,7 +48,7 @@ vvp out/ff
 | 2 | I2C 暖身練習（clock divider、tri-state、edge detector、shift register） | 完成 |
 | 3 | I2C Master — Single Byte Write | 完成 |
 | 4 | I2C Master — Read + Repeated Start + Multi-byte | 完成 |
-| 5 | I2C Slave Controller | 進行中 |
+| 5 | I2C Slave Controller | 完成 |
 | 6 | 系統整合 + 驗證 | — |
 | 7 | Edge Cases + Demo 準備 | — |
 | 8 | cocotb + FastAPI 互動式測試平台（Extra） | — |
