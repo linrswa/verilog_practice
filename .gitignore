@@ -6,3 +6,11 @@ out/
 
 # HDL checker cache
 .hdl_checker/
+
+# Python
+__pycache__/
+.venv/
+
+# cocotb build artifacts
+sim_build/
+results.xml
