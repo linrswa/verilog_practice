@@ -24,3 +24,19 @@
 **根因**: SCL always block 中 `IDLE, START, STOP: scl_oe <= 0` 使 STOP state 保持 SCL HIGH。Slave 在 ACK state 等待 `scl_falling` 釋放 SDA，但 SCL 不再 clock。Slave 持續拉低 SDA（ACK），master 釋放 SDA 時 SDA 無法上升，STOP condition（SDA 0→1 while SCL HIGH）永遠不會發生。
 **修復**: 從 SCL idle list 移除 STOP：`IDLE, START: scl_oe <= 0`。STOP state 改用 default case 正常 clock SCL，讓 slave 在 scl_falling 時釋放 ACK，之後 master 才執行 SDA low→high 產生正確的 STOP condition。
 **影響**: 同 Bug 1，standalone testbench 中 behavioral slave 不受影響。Real slave 才會觸發。
+
+---
+
+## 待修正：Slave 端已知問題
+
+### Bug 4: Slave 在 READ-ACK 階段誤判 STOP condition（未修正）
+
+**檔案**: `i2c_slave.v`
+**症狀**: Master 執行 READ transaction 時，slave 在 ACK window 中偵測到假 STOP，導致 transaction 提前中斷。Repeated start 場景尤其容易觸發。
+**根因**: Master READ 時在 ACK phase 會釋放 SDA（準備送 ACK/NACK），若此時 SCL 為 HIGH，SDA 從 LOW→HIGH 的變化會被 slave 的 `stop_condition` 偵測邏輯誤判為 STOP。
+**修復方案**: 已在 i2c_demo 專案的 slave 中實作修正（`/Users/rswa/Dev/verilog/i2c_demo/backend/sim/rtl/i2c_slave.v`）。修正方式：
+- 新增 `in_read_ack_window` flag，在 slave 送出 read data 的最後一個 bit 到下一個 SCL falling edge 之間設為 1
+- 修改 stop_condition 為 `stop_condition = scl & ~sda_prev & sda & ~in_read_ack_window`
+- 讓 slave 在 read ACK window 期間忽略 SDA 變化
+
+**參考**: 從 i2c_demo 的 slave 把 `in_read_ack_window` 相關邏輯移植過來即可。
