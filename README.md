@@ -6,12 +6,16 @@
 
 - **模擬器**：[Icarus Verilog](https://github.com/steveicarus/iverilog)（`iverilog` + `vvp`）
 - **波形檢視**：[Surfer](https://surfer-project.org/)（VSCode 擴充套件）
+- **版本管理**：[mise](https://mise.jdx.dev/)（管理 node、python 等工具版本）
+- **tree-sitter CLI**：nvim treesitter parser 編譯需要（`npm install -g tree-sitter-cli`）
 
 ## 專案結構
 
 ```
 ├── FF/                 # Flip-Flop 基礎（DFF with async reset）
 ├── FSM/                # 有限狀態機（販賣機 FSM，Mealy 型）
+├── I2C/                # I2C Master/Slave（Verilog）— Phase 3~6 完成
+├── I2C_sv/             # I2C Master/Slave（SystemVerilog 重設計）— Phase 1 進行中
 ├── plan.md             # 完整學習計畫（階段 1~8）
 └── drills/             # 實作練習（每個資料夾含 task.md 規格 + 實作）
     ├── basic_clock_divider/
@@ -46,12 +50,13 @@ vvp out/ff
 |------|------|------|
 | 1 | 數位基礎元件（DFF、FSM） | 完成 |
 | 2 | I2C 暖身練習（clock divider、tri-state、edge detector、shift register） | 完成 |
-| 3 | I2C Master — Single Byte Write | 完成 |
-| 4 | I2C Master — Read + Repeated Start + Multi-byte | 完成 |
-| 5 | I2C Slave Controller | 完成 |
-| 6 | 系統整合 + 驗證 | — |
+| 3 | I2C Master — Single Byte Write | ✅ 完成 → [I2C/](I2C/) |
+| 4 | I2C Master — Read + Repeated Start + Multi-byte | ✅ 完成 → [I2C/](I2C/) |
+| 5 | I2C Slave Controller | ✅ 完成 → [I2C/](I2C/) |
+| 6 | 系統整合 + 驗證 | ✅ 完成（3/4 bugs fixed）→ [I2C/](I2C/) |
 | 7 | Edge Cases + Demo 準備 | — |
 | 8 | cocotb + FastAPI 互動式測試平台（Extra） | — |
+| — | **SystemVerilog 重設計** | 🔧 Phase 1 進行中 → [I2C_sv/](I2C_sv/) |
 
 ## Drills 練習系統
 
